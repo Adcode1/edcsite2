@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Page</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Our Team</h1>
+  <div id="team-container"></div>
+  <div id="live-wallpaper">
+    <video autoplay loop muted>
+        <source src="../pexels-gusat-silviu-6527135-1920x1080-25fps.mp4" type="video/mp4">
+    </video>
+</div>
+<script>
+    fetch('https://ashish4arora.github.io/edc-tech-recruitment/team.json')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(member => {
+          const card = document.createElement('div');
+          card.classList.add('member-card');
+          if (member.profile_pic) {
+            const profilePic = document.createElement('img');
+            profilePic.src = member.profile_pic;
+            card.appendChild(profilePic);
+          }
+          else{
+            const profilePic = document.createElement('img');
+            profilePic.src = 'no-profile-photo.png';
+            card.appendChild(profilePic);
+          }
+          const details = document.createElement('div');
+          details.innerHTML = `
+            <h2>${member.firstname} ${member.lastname}</h2>
+            <p>${member.post}</p>
+            <p>Email: ${member.contact_email}</p>
+            <p>Contact Number: ${member.contact_number || 'N/A'}</p>
+            <p>
+              <a href="${member.linkedin}" target="_blank">LinkedIn</a>
+              ${member.twitter ? `<a href="${member.twitter}" target="_blank">Twitter</a>` : ''}
+              ${member.instagram ? `<a href="${member.instagram}" target="_blank">Instagram</a>` : ''}
+            </p>
+          `;
+          card.appendChild(details);
+          const teamContainer = document.getElementById('team-container');
+          teamContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
